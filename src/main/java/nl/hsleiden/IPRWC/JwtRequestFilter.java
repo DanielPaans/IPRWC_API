@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import io.jsonwebtoken.*;
 import nl.hsleiden.IPRWC.dao.UserDetailsDAO;
-import nl.hsleiden.IPRWC.models.Response;
+import nl.hsleiden.IPRWC.httpResponses.Response;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

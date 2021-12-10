@@ -1,4 +1,4 @@
-package nl.hsleiden.IPRWC.models;
+package nl.hsleiden.IPRWC.httpResponses;
 
 import java.util.Date;
 import java.util.HashMap;
