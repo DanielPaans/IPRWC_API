@@ -20,23 +20,35 @@ public class Product {
     private int amount;
     @Column(nullable = false)
     private float price;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "product_category",
             joinColumns = {@JoinColumn(name = "product_id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id")})
+            inverseJoinColumns = {@JoinColumn(name = "category_id", updatable = false, insertable = false)})
     private Set<Category> categories;
+    private String imagePath;
 
     public Product() {}
 
-    public Product(String name, String description, float price) {
+    public Product(String name, String description, float price, Set<Category> categories) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.categories = categories;
     }
 
-    public Product(String name, String description, float price, int amount) {
-        this(name, description, price);
+    public Product(String name, String description, float price, Set<Category> categories, int amount) {
+        this(name, description, price, categories);
         this.amount = amount;
+    }
+
+    public Product(String name, String description, float price, Set<Category> categories, String imagePath) {
+        this(name, description, price, categories);
+        this.imagePath = imagePath;
+    }
+
+    public Product(String name, String description, float price, Set<Category> categories, int amount, String imagePath) {
+        this(name, description, price, categories, amount);
+        this.imagePath = imagePath;
     }
 
     public UUID getId() {
@@ -77,5 +89,29 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
+    }
+
+    public void removeCategory(Category category) {
+        this.categories.remove(category);
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
