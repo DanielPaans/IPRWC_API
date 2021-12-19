@@ -9,8 +9,8 @@ public class RoleDAO {
 
     private final RoleRepository ROLE_REPOSITORY;
 
-    public RoleDAO(RoleRepository role_repository) {
-        ROLE_REPOSITORY = role_repository;
+    public RoleDAO(RoleRepository roleRepository) {
+        ROLE_REPOSITORY = roleRepository;
     }
 
     public Role getRole(String name) {

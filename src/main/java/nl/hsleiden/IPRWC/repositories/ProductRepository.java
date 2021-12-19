@@ -1,6 +1,5 @@
 package nl.hsleiden.IPRWC.repositories;
 
-import nl.hsleiden.IPRWC.models.Category;
 import nl.hsleiden.IPRWC.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,10 +15,13 @@ import java.util.UUID;
 @Transactional
 public interface ProductRepository extends JpaRepository<Product, UUID> {
 
-    @Query(value = "SELECT id, amount, description, name, price FROM product " +
-                    "JOIN product_category ON product_id = id " +
-                    "WHERE category_id = :id ;", nativeQuery = true)
-    List<Product> findProductsByCategory(@Param("id") UUID id);
+    @Query(value = "SELECT p.id, amount, description, name, price, image_path " +
+            "FROM product p JOIN product_category ON p.id = product_id " +
+            "WHERE category_id = :id AND name LIKE :keyword% ;", nativeQuery = true)
+    List<Product> findProductsByCategory(@Param("id") UUID id, @Param("keyword") String keyword);
+
+    @Query(value = "SELECT * FROM product WHERE name LIKE :keyword% ; ", nativeQuery = true)
+    List<Product> findProductsByKeyword(@Param("keyword") String keyword);
 
     @Modifying
     @Query(value = "UPDATE product SET name = :name WHERE id = :id ;", nativeQuery = true)

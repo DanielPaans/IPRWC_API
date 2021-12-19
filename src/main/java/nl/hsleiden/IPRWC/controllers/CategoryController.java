@@ -6,8 +6,13 @@ import nl.hsleiden.IPRWC.models.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("${DEFAULT_PATH}${CATEGORY}")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
 
     private final CategoryDAO CATEGORY_DAO;
@@ -17,13 +22,16 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Response> postCategory(@RequestBody Category category) {
-        CATEGORY_DAO.storeCategory(category);
-        return ResponseEntity.ok(new Response("category added"));
+    public Category postCategory(@RequestBody Category category) {
+        return CATEGORY_DAO.storeCategory(category);
     }
 
     @GetMapping
-    public Category getCategory(@RequestBody String categoryName) {
-        return CATEGORY_DAO.findCategory(categoryName);
+    public List<Category> getCategory(@RequestParam Optional<String> categoryName) {
+        if(categoryName.isPresent()) {
+            return CATEGORY_DAO.findCategory(categoryName.get());
+        } else {
+            return CATEGORY_DAO.getGategories();
+        }
     }
 }

@@ -7,16 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AdminDetails implements UserDetails {
 
-    private String username;
+    private UUID id;
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public AdminDetails(Admin user) {
-        this.username = user.getUsername();
+    public AdminDetails(User user) {
+        this.id = user.getId();
         this.password = user.getPassword();
         this.authorities = Arrays.stream(user.getRole().toString().split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
@@ -34,7 +35,7 @@ public class AdminDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return id.toString();
     }
 
     @Override

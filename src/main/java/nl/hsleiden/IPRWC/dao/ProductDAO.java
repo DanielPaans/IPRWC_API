@@ -13,20 +13,24 @@ public class ProductDAO {
 
     private final ProductRepository PRODUCT_REPOSITORY;
 
-    public ProductDAO(ProductRepository product_repository) {
-        PRODUCT_REPOSITORY = product_repository;
+    public ProductDAO(ProductRepository productRepository) {
+        PRODUCT_REPOSITORY = productRepository;
     }
 
     public List<Product> findProducts() {
         return PRODUCT_REPOSITORY.findAll();
     }
 
-    public List<Product> findProductsByCategory(UUID categoryId) {
-        return PRODUCT_REPOSITORY.findProductsByCategory(categoryId);
+    public List<Product> findProductsByKeyword(String keyword) {
+        return PRODUCT_REPOSITORY.findProductsByKeyword(keyword);
     }
 
-    public void storeProduct(List<Product> product) {
-        PRODUCT_REPOSITORY.saveAll(product);
+    public List<Product> findProductsByCategory(UUID categoryId, String keyword) {
+        return PRODUCT_REPOSITORY.findProductsByCategory(categoryId, keyword);
+    }
+
+    public List<Product> storeProduct(List<Product> product) {
+        return PRODUCT_REPOSITORY.saveAll(product);
     }
 
     public void deleteProduct(UUID productId) {

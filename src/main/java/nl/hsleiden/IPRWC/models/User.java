@@ -1,5 +1,7 @@
 package nl.hsleiden.IPRWC.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -13,21 +15,31 @@ public class User {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(nullable = false)
     private String email;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column(unique = true, length = 60, nullable = false)
+    private String password;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     public User() {}
 
-    public User(String email) {
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(String username, String password, String email) {
+        this(username, password);
         this.email = email;
     }
 
-    public User(String email, Role role) {
-        this(email);
+    public User(String username, String password, String email, Role role) {
+        this(username, password, email);
         this.role = role;
     }
 
@@ -53,5 +65,21 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

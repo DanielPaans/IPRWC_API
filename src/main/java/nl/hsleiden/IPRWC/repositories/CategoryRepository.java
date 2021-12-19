@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, UUID> {
 
     @Query(value = "SELECT * FROM category WHERE LOWER(name) = LOWER(:name);", nativeQuery = true)
-    Category findCategoryByName(@Param("name") String name);
+    List<Category> findCategoryByName(@Param("name") String name);
 }

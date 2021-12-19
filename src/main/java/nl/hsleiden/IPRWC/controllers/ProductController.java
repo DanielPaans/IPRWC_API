@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${DEFAULT_PATH}${PRODUCT}")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
 
     private final ProductDAO PRODUCT_DAO;
@@ -24,19 +25,22 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts(@RequestParam(value = "category") Optional<String> category) {
-        if(category.isPresent()) {
-            UUID categoryId = CATEGORY_CONTROLLER.getCategory(category.get()).getId();
-            return PRODUCT_DAO.findProductsByCategory(categoryId);
+    public List<Product> getProducts(@RequestParam(value = "keyword") Optional<String> keyword,
+                                     @RequestParam(value = "category") Optional<String> category) {
+
+        if(category.isPresent() && keyword.isPresent()) {
+            UUID categoryId = CATEGORY_CONTROLLER.getCategory(category).get(0).getId();
+            return PRODUCT_DAO.findProductsByCategory(categoryId, keyword.get());
+        } else if(keyword.isPresent()) {
+            return PRODUCT_DAO.findProductsByKeyword(keyword.get());
         } else {
             return PRODUCT_DAO.findProducts();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Response> postProduct(@RequestBody List<Product> product) {
-        PRODUCT_DAO.storeProduct(product);
-        return ResponseEntity.ok(new Response("Product stored"));
+    public List<Product> postProduct(@RequestBody List<Product> product) {
+        return PRODUCT_DAO.storeProduct(product);
     }
 
     @DeleteMapping("/{id}")
@@ -59,8 +63,10 @@ public class ProductController {
         amount.ifPresent(s -> PRODUCT_DAO.changeAmount(id, s));
         price.ifPresent(s -> PRODUCT_DAO.changePrice(id, s));
         imagePath.ifPresent(s -> PRODUCT_DAO.changeImage(id, s));
-        addCategory.ifPresent(s -> PRODUCT_DAO.addCategory(id, CATEGORY_CONTROLLER.getCategory(s).getId()));
-        removeCategory.ifPresent(s -> PRODUCT_DAO.removeCategory(id, CATEGORY_CONTROLLER.getCategory(s).getId()));
+        addCategory.ifPresent(s ->
+                PRODUCT_DAO.addCategory(id, CATEGORY_CONTROLLER.getCategory(Optional.of(s)).get(0).getId()));
+        removeCategory.ifPresent(s ->
+                PRODUCT_DAO.removeCategory(id, CATEGORY_CONTROLLER.getCategory(Optional.of(s)).get(0).getId()));
 
         return ResponseEntity.ok(new Response("product updated"));
     }
