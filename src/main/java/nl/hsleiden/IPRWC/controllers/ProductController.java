@@ -39,8 +39,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public List<Product> postProduct(@RequestBody List<Product> product) {
+    public Product postProduct(@RequestBody Product product) {
         return PRODUCT_DAO.storeProduct(product);
+    }
+
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable UUID id) {
+        return PRODUCT_DAO.getProductById(id);
     }
 
     @DeleteMapping("/{id}")

@@ -21,6 +21,10 @@ public class ProductDAO {
         return PRODUCT_REPOSITORY.findAll();
     }
 
+    public Product getProductById(UUID id) {
+        return PRODUCT_REPOSITORY.findById(id).get();
+    }
+
     public List<Product> findProductsByKeyword(String keyword) {
         return PRODUCT_REPOSITORY.findProductsByKeyword(keyword);
     }
@@ -29,8 +33,8 @@ public class ProductDAO {
         return PRODUCT_REPOSITORY.findProductsByCategory(categoryId, keyword);
     }
 
-    public List<Product> storeProduct(List<Product> product) {
-        return PRODUCT_REPOSITORY.saveAll(product);
+    public Product storeProduct(Product product) {
+        return PRODUCT_REPOSITORY.save(product);
     }
 
     public void deleteProduct(UUID productId) {
