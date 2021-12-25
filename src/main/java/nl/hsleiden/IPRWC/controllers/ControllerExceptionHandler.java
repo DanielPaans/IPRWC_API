@@ -1,5 +1,6 @@
 package nl.hsleiden.IPRWC.controllers;
 
+import nl.hsleiden.IPRWC.exceptions.NoUserInOrderException;
 import nl.hsleiden.IPRWC.httpResponses.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleElementDoesNotExist(NoSuchElementException nsee) {
         return this.returnBadRequest("This item does not exist");
+    }
+
+    @ExceptionHandler(NoUserInOrderException.class)
+    public ResponseEntity<Object> handleNoUserInOrderException(NoUserInOrderException nuioe) {
+        return this.returnUnauthorized("User is not logged in");
     }
 
     @Override

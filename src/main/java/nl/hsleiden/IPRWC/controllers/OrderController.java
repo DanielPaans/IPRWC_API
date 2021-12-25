@@ -1,6 +1,7 @@
 package nl.hsleiden.IPRWC.controllers;
 
 import nl.hsleiden.IPRWC.dao.OrderDAO;
+import nl.hsleiden.IPRWC.exceptions.NoUserInOrderException;
 import nl.hsleiden.IPRWC.httpResponses.Response;
 import nl.hsleiden.IPRWC.models.PlacedOrder;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public PlacedOrder placeOrder(@RequestBody PlacedOrder order) {
+    public PlacedOrder placeOrder(@RequestBody PlacedOrder order) throws NoUserInOrderException {
         return ORDER_DAO.storeOrder(order);
     }
 
