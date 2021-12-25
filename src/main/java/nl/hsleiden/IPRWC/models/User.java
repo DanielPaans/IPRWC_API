@@ -3,6 +3,7 @@ package nl.hsleiden.IPRWC.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity

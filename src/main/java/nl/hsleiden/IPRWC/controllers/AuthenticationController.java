@@ -6,6 +6,7 @@ import nl.hsleiden.IPRWC.httpResponses.AuthenticationRequest;
 import nl.hsleiden.IPRWC.httpResponses.AuthenticationResponse;
 import nl.hsleiden.IPRWC.models.LoggedInUser;
 import nl.hsleiden.IPRWC.models.Role;
+import nl.hsleiden.IPRWC.models.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,7 +54,8 @@ public class AuthenticationController {
         final UserDetails USERDETAILS = USER_DETAILS_DAO.loadUserByUsername(authenticationRequest.getUsername());
         final String JWT = JWT_TOKEN_UTIL.generateToken(USERDETAILS);
 
-        Role role = USER_CONTROLLER.getUser(UUID.fromString(USERDETAILS.getUsername())).getRole();
-        return ResponseEntity.ok(new AuthenticationResponse(role.getName(), JWT));
+        User user = USER_CONTROLLER.getUser(UUID.fromString(USERDETAILS.getUsername()));
+        Role role = user.getRole();
+        return ResponseEntity.ok(new AuthenticationResponse(user.getId(), role.getName(), JWT));
     }
 }
