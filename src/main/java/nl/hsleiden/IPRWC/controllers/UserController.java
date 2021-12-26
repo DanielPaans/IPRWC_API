@@ -27,27 +27,18 @@ public class UserController {
         ROLE_DAO = roleDAO;
     }
 
-    @GetMapping
-    public List<LoggedInUser> getUsers() {
-        return USER_DAO.getUsers();
-    }
-
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable UUID id) {
-        return USER_DAO.getUser(id);
-    }
-
     @PostMapping
-    public LoggedInUser createUser(@RequestBody LoggedInUser user) {
+    public User createUser(@RequestBody User user) {
         if(user.getRole() == null) { user.setRole(ROLE_DAO.getRole("ROLE_USER"));}
         return USER_DAO.storeUser(user);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Response> addProductToUser(@PathVariable UUID id, @RequestBody Product product) {
-        USER_DAO.addProductToUser(id, product);
-        return ResponseEntity.ok(new Response(product));
-    }
+    //TODO: change to shoppingcart probably
+//    @PostMapping("/{id}")
+//    public ResponseEntity<Response> addProductToUser(@PathVariable UUID id, @RequestBody Product product) {
+//        USER_DAO.addProductToUser(id, product);
+//        return ResponseEntity.ok(new Response(product));
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> changeCredentials(@PathVariable UUID id, @RequestParam("username") Optional<String> username,
@@ -62,5 +53,9 @@ public class UserController {
     public ResponseEntity<Response> deleteUser(@PathVariable UUID id) {
         USER_DAO.deleteUser(id);
         return ResponseEntity.ok(new Response("user deleted"));
+    }
+
+    public User getUser(@PathVariable UUID id) {
+        return USER_DAO.getUser(id);
     }
 }

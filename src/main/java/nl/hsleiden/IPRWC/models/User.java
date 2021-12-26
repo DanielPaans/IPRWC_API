@@ -16,11 +16,16 @@ public class User {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @Column(nullable = false)
     private String email;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(unique = true, length = 60, nullable = false)
     private String password;
+    @Column(length = 6, nullable = false)
+    private String postalCode;
+    @Column(nullable = false)
+    private String city;
 
     @JsonIgnore
     @ManyToOne
@@ -29,18 +34,16 @@ public class User {
 
     public User() {}
 
-    public User(String username, String password) {
+    public User(String username, String password, String email, String postalCode, String city) {
         this.username = username;
         this.password = password;
-    }
-
-    public User(String username, String password, String email) {
-        this(username, password);
+        this.postalCode = postalCode;
         this.email = email;
+        this.city = city;
     }
 
-    public User(String username, String password, String email, Role role) {
-        this(username, password, email);
+    public User(String username, String password, String email, String postalCode, String city, Role role) {
+        this(username, password, email, postalCode, city);
         this.role = role;
     }
 
@@ -82,5 +85,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

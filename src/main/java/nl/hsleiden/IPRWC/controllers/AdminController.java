@@ -1,13 +1,12 @@
 package nl.hsleiden.IPRWC.controllers;
 
-import nl.hsleiden.IPRWC.dao.AdminDAO;
 import nl.hsleiden.IPRWC.dao.RoleDAO;
+import nl.hsleiden.IPRWC.dao.UserDAO;
 import nl.hsleiden.IPRWC.httpResponses.Response;
-import nl.hsleiden.IPRWC.models.Admin;
+import nl.hsleiden.IPRWC.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,36 +15,31 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
-    private final AdminDAO ADMIN_DAO;
+    private final UserDAO USER_DAO;
     private final RoleDAO ROLE_DAO;
 
-    public AdminController(AdminDAO adminDAO, RoleDAO roleDAO) {
-        ADMIN_DAO = adminDAO;
+    public AdminController(UserDAO adminDAO, RoleDAO roleDAO) {
+        USER_DAO = adminDAO;
         ROLE_DAO = roleDAO;
     }
 
-    @GetMapping
-    public List<Admin> getAdmins() {
-        return ADMIN_DAO.findAdmins();
-    }
-
     @PostMapping
-    public Admin createAdmin(@RequestBody Admin admin) {
+    public User createAdmin(@RequestBody User admin) {
         if(admin.getRole() == null) { admin.setRole(ROLE_DAO.getRole("ROLE_ADMIN"));}
-        return ADMIN_DAO.storeAdmin(admin);
+        return USER_DAO.storeUser(admin);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> removeAdmin(@PathVariable UUID id) {
-        ADMIN_DAO.deleteAdmin(id);
+        USER_DAO.deleteUser(id);
         return ResponseEntity.ok(new Response("admin removed"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> changeCredentials(@PathVariable UUID id, @RequestParam("username")Optional<String> username,
                                                       @RequestParam("password") Optional<String> password) {
-        username.ifPresent(s -> ADMIN_DAO.changeUsername(id, s));
-        password.ifPresent(s -> ADMIN_DAO.changePassword(id, s));
+        username.ifPresent(s -> USER_DAO.changeUsername(id, s));
+        password.ifPresent(s -> USER_DAO.changePassword(id, s));
 
         return ResponseEntity.ok(new Response("Updated admin credentials"));
     }

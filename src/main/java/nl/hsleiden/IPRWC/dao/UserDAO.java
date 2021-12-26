@@ -1,33 +1,29 @@
 package nl.hsleiden.IPRWC.dao;
 
 import nl.hsleiden.IPRWC.models.LoggedInUser;
-import nl.hsleiden.IPRWC.models.Product;
 import nl.hsleiden.IPRWC.models.User;
-import nl.hsleiden.IPRWC.repositories.LoggedInUserRepository;
+import nl.hsleiden.IPRWC.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserDAO {
 
-    private final LoggedInUserRepository USER_REPOSITORY;
+    private final UserRepository USER_REPOSITORY;
     private final PasswordEncoder PASSWORD_ENCODER;
 
-    public UserDAO(LoggedInUserRepository loggedInUserRepository, PasswordEncoder passwordEncoder) {
-        USER_REPOSITORY = loggedInUserRepository;
+    public UserDAO(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        USER_REPOSITORY = userRepository;
         PASSWORD_ENCODER = passwordEncoder;
     }
 
-    public LoggedInUser storeUser(LoggedInUser user) {
+    public User storeUser(User user) {
         user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
-        return USER_REPOSITORY.save(user);
-    }
-
-    public List<LoggedInUser> getUsers() {
-        return USER_REPOSITORY.findAll();
+        User savedUser = USER_REPOSITORY.save(user);
+        savedUser.setPassword(null);
+        return savedUser;
     }
 
     public void changeUsername(UUID id, String username) {
@@ -41,10 +37,10 @@ public class UserDAO {
     public void changeEmail(UUID id, String email) {
         USER_REPOSITORY.updateEmail(id, email);
     }
-
-    public void addProductToUser(UUID id, Product product) {
-        USER_REPOSITORY.addToRecentlySearched(id, product.getId());
-    }
+// TODO: add to shoppingCart
+//    public void addProductToUser(UUID id, Product product) {
+//        USER_REPOSITORY.addToRecentlySearched(id, product.getId());
+//    }
 
     public User getUser(UUID id) {
         return USER_REPOSITORY.getById(id);

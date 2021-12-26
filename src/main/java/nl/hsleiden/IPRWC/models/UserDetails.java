@@ -2,7 +2,6 @@ package nl.hsleiden.IPRWC.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,13 +9,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class AdminDetails implements UserDetails {
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
     private UUID id;
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public AdminDetails(User user) {
+    public UserDetails(User user) {
         this.id = user.getId();
         this.password = user.getPassword();
         this.authorities = Arrays.stream(user.getRole().toString().split(","))
