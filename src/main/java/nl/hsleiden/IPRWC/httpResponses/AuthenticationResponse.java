@@ -1,7 +1,6 @@
 package nl.hsleiden.IPRWC.httpResponses;
 
-import nl.hsleiden.IPRWC.models.Role;
-
+import java.util.Date;
 import java.util.UUID;
 
 public class AuthenticationResponse {
@@ -9,11 +8,13 @@ public class AuthenticationResponse {
     private UUID id;
     private String role;
     private String jwt;
+    private Date expireTime;
 
-    public AuthenticationResponse(UUID id, String role, String jwt) {
+    public AuthenticationResponse(UUID id, String role, String jwt, Date expireTime) {
         this.id = id;
         this.role = role;
         this.jwt = jwt;
+        this.expireTime = expireTime;
     }
 
     public UUID getId() {
@@ -38,5 +39,9 @@ public class AuthenticationResponse {
 
     public void setJwt(String jwt) {
         this.jwt = jwt;
+    }
+
+    public Date getExpiresAt() {
+        return expireTime;
     }
 }

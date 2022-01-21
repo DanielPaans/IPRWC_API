@@ -19,7 +19,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<Object> handleSQLException(SQLException sqle) {
-        return new ResponseEntity<>("SQLException " + sqle.getSQLState() + ": " + sqle.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        if(sqle.getErrorCode() == 1062 && sqle.getMessage().contains("user")) {
+            return returnBadRequest("Username already in use");
+        } else {
+            return new ResponseEntity<>("SQLException " + sqle.getSQLState() + ": " + sqle.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ExceptionHandler(NoSuchElementException.class)

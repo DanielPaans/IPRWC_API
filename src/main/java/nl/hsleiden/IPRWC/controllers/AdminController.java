@@ -5,14 +5,16 @@ import nl.hsleiden.IPRWC.dao.UserDAO;
 import nl.hsleiden.IPRWC.httpResponses.Response;
 import nl.hsleiden.IPRWC.models.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Secured("ROLE_ADMIN")
 @RequestMapping("${DEFAULT_PATH}${ADMIN}")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://www.rockingman.nl", "https://rockingman.nl"})
 public class AdminController {
 
     private final UserDAO USER_DAO;

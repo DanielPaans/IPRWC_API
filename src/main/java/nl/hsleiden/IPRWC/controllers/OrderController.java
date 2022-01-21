@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${DEFAULT_PATH}${ORDER}")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://www.rockingman.nl", "https://rockingman.nl"})
 public class OrderController {
 
     private final OrderDAO ORDER_DAO;

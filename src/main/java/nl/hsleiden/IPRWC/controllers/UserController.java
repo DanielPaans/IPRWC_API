@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${DEFAULT_PATH}${USER}")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://www.rockingman.nl", "https://rockingman.nl"})
 public class UserController {
 
     protected final UserDAO USER_DAO;
@@ -55,7 +55,7 @@ public class UserController {
         return ResponseEntity.ok(new Response("user deleted"));
     }
 
-    public User getUser(@PathVariable UUID id) {
-        return USER_DAO.getUser(id);
+    public User getUser(String username) {
+        return USER_DAO.getUser(username);
     }
 }

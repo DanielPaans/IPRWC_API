@@ -5,6 +5,7 @@ import nl.hsleiden.IPRWC.httpResponses.Response;
 import nl.hsleiden.IPRWC.models.Category;
 import nl.hsleiden.IPRWC.models.Product;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${DEFAULT_PATH}${PRODUCT}")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://www.rockingman.nl", "https://rockingman.nl"})
 public class ProductController {
 
     private final ProductDAO PRODUCT_DAO;
@@ -38,6 +39,7 @@ public class ProductController {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping
     public Product postProduct(@RequestBody Product product) {
         return PRODUCT_DAO.storeProduct(product);
@@ -48,12 +50,14 @@ public class ProductController {
         return PRODUCT_DAO.getProductById(id);
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteProduct(@PathVariable UUID id) {
         PRODUCT_DAO.deleteProduct(id);
         return ResponseEntity.ok(new Response("Product deleted"));
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{id}")
     public ResponseEntity<Response> editProduct(@PathVariable UUID id,
                                                 @RequestParam("name") Optional<String> name,

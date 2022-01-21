@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${DEFAULT_PATH}${AUTHENTICATE}")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://www.rockingman.nl", "https://rockingman.nl"})
 public class AuthenticationController {
 
     private final AuthenticationManager AUTHENTICATION_MANAGER;
@@ -54,8 +54,8 @@ public class AuthenticationController {
         final UserDetails USERDETAILS = USER_DETAILS_DAO.loadUserByUsername(authenticationRequest.getUsername());
         final String JWT = JWT_TOKEN_UTIL.generateToken(USERDETAILS);
 
-        User user = USER_CONTROLLER.getUser(UUID.fromString(USERDETAILS.getUsername()));
+        User user = USER_CONTROLLER.getUser(USERDETAILS.getUsername());
         Role role = user.getRole();
-        return ResponseEntity.ok(new AuthenticationResponse(user.getId(), role.getName(), JWT));
+        return ResponseEntity.ok(new AuthenticationResponse(user.getId(), role.getName(), JWT, JWT_TOKEN_UTIL.extractExpiration(JWT)));
     }
 }

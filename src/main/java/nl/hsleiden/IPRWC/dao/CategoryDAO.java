@@ -5,6 +5,7 @@ import nl.hsleiden.IPRWC.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CategoryDAO {
@@ -25,5 +26,9 @@ public class CategoryDAO {
 
     public List<Category> getGategories() {
         return CATEGORY_REPOSITORY.findAll();
+    }
+
+    public void removeCategory(UUID id) {
+        CATEGORY_REPOSITORY.deleteById(id);
     }
 }

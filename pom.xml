@@ -15,6 +15,8 @@
 	<description>IPRWC Webshop</description>
 	<properties>
 		<java.version>16</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<redis.version>1.3.5.RELEASE</redis.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -81,6 +83,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.asciidoctor</groupId>

@@ -37,13 +37,14 @@ public class UserDAO {
     public void changeEmail(UUID id, String email) {
         USER_REPOSITORY.updateEmail(id, email);
     }
+
 // TODO: add to shoppingCart
 //    public void addProductToUser(UUID id, Product product) {
 //        USER_REPOSITORY.addToRecentlySearched(id, product.getId());
 //    }
 
-    public User getUser(UUID id) {
-        return USER_REPOSITORY.getById(id);
+    public User getUser(String username) {
+        return USER_REPOSITORY.findUserByUsername(username).get();
     }
 
     public void deleteUser(UUID id) {
